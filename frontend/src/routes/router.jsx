@@ -1,0 +1,48 @@
+import { createBrowserRouter } from "react-router-dom";
+import ProtectRouter from "./ProtectRouter";
+import App from "../App";
+import AdminLayout from "../components/layout/AdminLayout";
+import Login from "../pages/User/Login";
+import Profile from "../pages/User/Profile";
+import Register from "../pages/User/Register";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <ProtectRouter />,
+    children: [
+      {
+        path: "/",
+        element: <App />,
+        children: [
+          {
+            path: "/",
+            element: <AdminLayout />,
+            children: [
+              {
+                path: "/profile",
+                element:<Profile/>
+              },
+            ],
+          },
+          {
+            path:'/about',
+            element: <h1>About</h1>
+          }
+        ],
+      },
+    ],
+  },
+
+   {
+    path: "/register",
+    element: <Register />,
+  },
+
+  {
+    path: "/login",
+    element: <Login />,
+  },
+]);
+
+export default router;

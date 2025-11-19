@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import bgImg from "../../assets/bg.jpg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -18,7 +18,15 @@ const schema = yup.object({
 
 
 const Login = () => {
+
   const navigate = useNavigate();
+
+  useEffect(()=>{
+   const  token =  localStorage.getItem('token');
+   if(token){
+      navigate('/')
+   }
+  },[navigate])
 
   const {
   register,
@@ -35,7 +43,7 @@ const Login = () => {
       navigate("/");
       toast.success("Login successful");
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message || "Internal Server Error");
     }
   };
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import treeImg from "../../assets/trees.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -20,6 +20,14 @@ const schema = yup.object({
 const Register = () => {
   const navigate = useNavigate();
 
+
+    useEffect(()=>{
+     const  token =  localStorage.getItem('token');
+     if(token){
+        navigate('/')
+     }
+    },[navigate])
+
   const {
     register,
     handleSubmit,
@@ -34,7 +42,7 @@ const Register = () => {
       navigate("/login");
       toast.success("Reigsteration Succssfull, Now login");
     } catch (error) {
-      toast.error(error.response.data.message);
+         toast.error(error?.response?.data?.message || "Internal Server Error");
     }
   };
 

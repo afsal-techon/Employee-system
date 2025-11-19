@@ -5,6 +5,7 @@ import AdminLayout from "../components/layout/AdminLayout";
 import Login from "../pages/User/Login";
 import Profile from "../pages/User/Profile";
 import Register from "../pages/User/Register";
+import Dashboard from "../pages/User/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -20,8 +21,8 @@ const router = createBrowserRouter([
             element: <AdminLayout />,
             children: [
               {
-                path: "/profile",
-                element:<Profile/>
+                path: "/",
+                element:<Dashboard/>
               },
             ],
           },

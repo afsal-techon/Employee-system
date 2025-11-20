@@ -3,8 +3,8 @@ import ProfilePopover from '../../components/UI/ProfilePopover'
 
 const Dashboard = () => {
   return (
-    <div className='bg-gray-200 w-full h-full'>
-     
+    <div className="w-full h-full p-4">
+     Dashboard
     </div>
   )
 }

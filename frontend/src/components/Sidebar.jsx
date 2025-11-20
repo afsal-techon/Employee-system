@@ -63,7 +63,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-64 bg-white min-h-screen shadow-lg">
+ <div className="w-64 bg-white h-screen shadow-lg overflow-y-auto">
       <div className="w-full py-3">
         <img className="w-20 h-20 mx-auto" src={Logo} alt="Logo" />
 

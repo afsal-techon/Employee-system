@@ -8,6 +8,8 @@ import ProfilePopover from './UI/ProfilePopover';
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import Alert from './UI/Alert';
+import { useAuthStore } from '../Store/authStore';
+
 
 
 const Navbar = () => {
@@ -15,6 +17,8 @@ const Navbar = () => {
 
     const navigate = useNavigate()
     const [isAlertOpen, setIsAlertOpen] = useState(false);
+   const { user } = useAuthStore()
+
 
     const handleLogout = ()=>{
         localStorage.removeItem('token');
@@ -39,8 +43,8 @@ const Navbar = () => {
                  {/* Profile */}
             <div className='flex items-cente gap-3 border-l pl-4 border-gray-300'>
                  <div className="flex flex-col leading-tight">
-                    <p className='text-blue-600 font-semibold text-sm md:text-base'>Afsal</p>
-                    <p className='text-gray-500 text-xs'>CompanyAdmin</p>
+                    <p className='text-blue-600 font-semibold text-sm md:text-base'>{user?.name}</p>
+                    <p className='text-gray-500 text-xs'>{user?.role}</p>
                 </div>
                  
                 <ProfilePopover openAlert={()=>setIsAlertOpen(true)} />

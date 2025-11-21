@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
 import axios from "../../services/axios";
+import { useAuthStore } from "../../Store/authStore";
 
 const schema = yup.object({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -39,9 +40,12 @@ const Login = () => {
   const formSubmit = async (formData) => {
     try {
       const { data } = await axios.post("/auth/login", formData);
-      localStorage.setItem("token", data.token);
-      navigate("/");
+      localStorage.setItem('token',data.token)
+       const { user } = data;
+       useAuthStore.getState().setAuth(user)
       toast.success("Login successful");
+      navigate("/");
+      
     } catch (error) {
       toast.error(error?.response?.data?.message || "Internal Server Error");
     }

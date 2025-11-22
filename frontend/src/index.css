@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+
+
 @import "tailwindcss";
 
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 body{
    font-family: "Inter", sans-serif;
@@ -29,4 +32,24 @@ body{
   animation: l3 1s infinite linear;
 }
 @keyframes l3 {to{transform: rotate(1turn)}}
+
+/* For Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 6px;        /* scrollbar width */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;   /* light track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;   /* light gray thumb */
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;   /* slightly darker on hover */
+}
+
 

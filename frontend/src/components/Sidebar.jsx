@@ -3,7 +3,7 @@ import Logo from "../assets/logo.jpg";
 import { BsFileBarGraph } from "react-icons/bs";
 import { LuShoppingCart } from "react-icons/lu";
 import { CiBoxes, CiBag1, CiHome } from "react-icons/ci";
-import { MdOutlineAccountBalance, MdClose } from "react-icons/md";
+import { MdOutlineAccountBalance, MdClose, MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -53,36 +53,17 @@ const sidebarMenu = [
   },
 ];
 
-const Sidebar = ({ isCollapsed, onToggleCollapse }) => {
+const Sidebar = ({ isCollapsed, onToggleCollapse, isMobile }) => {
   const [openMenu, setOpenMenu] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-
-  // Check if screen is mobile
-  useEffect(() => {
-    const checkScreenSize = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
-      
-      // Auto-collapse sidebar on mobile
-      if (mobile && !isCollapsed) {
-        onToggleCollapse();
-      }
-    };
-
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-
-    return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
 
   // Auto-close sidebar on mobile when route changes
   useEffect(() => {
     if (isMobile && !isCollapsed) {
       onToggleCollapse();
     }
-  }, [location.pathname, isMobile]);
+  }, [location.pathname, isMobile, isCollapsed, onToggleCollapse]);
 
   const toggleMenu = (menu) => {
     if (!isCollapsed) {
@@ -102,12 +83,22 @@ const Sidebar = ({ isCollapsed, onToggleCollapse }) => {
   };
 
   const handleCloseSidebar = () => {
-    onToggleCollapse();
+    if (isMobile) {
+      onToggleCollapse();
+    }
+  };
+
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
+
+  const isSubMenuActive = (subMenu) => {
+    return subMenu?.some(item => location.pathname === item.path);
   };
 
   return (
     <>
-      {/* Overlay for mobile - Only show when sidebar is open on mobile */}
+      {/* Overlay for mobile */}
       {isMobile && !isCollapsed && (
         <div 
           className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
@@ -119,21 +110,20 @@ const Sidebar = ({ isCollapsed, onToggleCollapse }) => {
       <div 
         className={`
           fixed md:relative 
-          bg-white h-screen shadow-lg overflow-y-auto 
+          bg-white h-full shadow-lg overflow-y-auto 
           transition-all duration-300 z-50
           ${isCollapsed ? 'w-16' : 'w-64'}
-          ${isMobile ? 'rounded-r-2xl' : ''}
           ${isMobile && !isCollapsed ? 'translate-x-0' : isMobile ? '-translate-x-full' : 'translate-x-0'}
         `}
       >
         <div className="w-full py-3">
-          {/* Logo and Close Button for Mobile */}
-          <div className="flex items-center justify-between px-4 relative">
+          {/* Logo Section */}
+          <div className="flex items-center justify-between px-4 mb-6">
             <div className="flex items-center justify-center flex-1">
               {isCollapsed ? (
-                <img className="w-10 h-10" src={Logo} alt="Logo" />
+                <img className="w-10 h-10 rounded-full" src={Logo} alt="Logo" />
               ) : (
-                <img className="w-20 h-20" src={Logo} alt="Logo" />
+                <img className="w-20 h-20 rounded-full" src={Logo} alt="Logo" />
               )}
             </div>
             
@@ -141,72 +131,94 @@ const Sidebar = ({ isCollapsed, onToggleCollapse }) => {
             {isMobile && !isCollapsed && (
               <button
                 onClick={handleCloseSidebar}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                className="p-2 rounded-lg hover:bg-gray-100 transition-colors absolute right-2"
               >
-                <MdClose size={24} className="text-blue-600" />
+                <MdClose size={20} className="text-gray-600" />
               </button>
             )}
           </div>
 
-          <div className="flex flex-col px-4 my-4 space-y-2">
-            {sidebarMenu.map((item) => (
-              <div key={item.label}>
-                {/* Parent menu */}
-                <div
-                  onClick={() => handleItemClick(item)}
-                  className={`
-                    flex gap-3 py-3 items-center cursor-pointer 
-                    hover:bg-blue-50 rounded-xl transition-colors
-                    ${isCollapsed ? 'justify-center px-2' : 'px-4'}
-                    ${location.pathname === item.path ? 'bg-blue-50 text-blue-600' : ''}
-                  `}
-                  title={isCollapsed ? item.label : ''}
-                >
-                  <item.icon 
-                    className={`flex-shrink-0 ${
-                      location.pathname === item.path ? 'text-blue-600' : 'text-blue-600'
-                    }`} 
-                    size={isCollapsed ? 24 : 26} 
-                  />
-                  
-                  {!isCollapsed && (
-                    <>
-                      <p className="font-semibold text-md whitespace-nowrap">
-                        {item.label}
-                      </p>
-                    </>
+          {/* Menu Items */}
+          <div className="flex flex-col px-2 space-y-1">
+            {sidebarMenu.map((item) => {
+              const hasSubMenu = item.subMenu && item.subMenu.length > 0;
+              const isItemActive = isActive(item.path) || (hasSubMenu && isSubMenuActive(item.subMenu));
+              const IconComponent = item.icon;
+              
+              return (
+                <div key={item.label}>
+                  {/* Parent menu item */}
+                  <div
+                    onClick={() => handleItemClick(item)}
+                    className={`
+                      flex items-center cursor-pointer 
+                      hover:bg-blue-50 rounded-lg transition-colors mx-2
+                      ${isCollapsed ? 'justify-center px-2 py-3' : 'justify-between px-3 py-3'}
+                      ${isItemActive ? 'bg-blue-50 text-blue-600' : 'text-gray-700'}
+                    `}
+                    title={isCollapsed ? item.label : ''}
+                  >
+                    <div className="flex items-center gap-3">
+                      <IconComponent 
+                        className={`flex-shrink-0 ${
+                          isItemActive ? 'text-blue-600' : 'text-gray-500'
+                        }`} 
+                        size={isCollapsed ? 20 : 18} 
+                      />
+                      
+                      {!isCollapsed && (
+                        <span className="font-medium text-sm whitespace-nowrap">
+                          {item.label}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Arrow for submenus */}
+                    {!isCollapsed && hasSubMenu && (
+                      <div>
+                        {openMenu === item.label ? (
+                          <MdKeyboardArrowUp size={16} className="text-gray-400" />
+                        ) : (
+                          <MdKeyboardArrowDown size={16} className="text-gray-400" />
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Submenu */}
+                  {!isCollapsed && hasSubMenu && (
+                    <div
+                      className={`overflow-hidden transition-all duration-300 ${
+                        openMenu === item.label
+                          ? "max-h-40 opacity-100"
+                          : "max-h-0 opacity-0"
+                      }`}
+                    >
+                      <div className="ml-6 mt-1 flex flex-col space-y-1">
+                        {item.subMenu.map((sub) => (
+                          <div
+                            key={sub.path}
+                            onClick={() => {
+                              navigate(sub.path);
+                              if (isMobile) onToggleCollapse();
+                            }}
+                            className={`
+                              cursor-pointer py-2 px-3 rounded-lg text-sm transition-colors
+                              ${isActive(sub.path) 
+                                ? 'bg-blue-50 text-blue-600 font-medium' 
+                                : 'text-gray-600 hover:bg-gray-100'
+                              }
+                            `}
+                          >
+                            {sub.label}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   )}
                 </div>
-
-                {/* Submenu - Only show when not collapsed */}
-                {!isCollapsed && item.subMenu && (
-                  <div
-                    className={`overflow-hidden transition-all duration-300 ml-6 ${
-                      openMenu === item.label
-                        ? "max-h-40 opacity-100"
-                        : "max-h-0 opacity-0"
-                    }`}
-                  >
-                    <div className="mt-1 flex flex-col space-y-1 text-gray-700">
-                      {item.subMenu.map((sub) => (
-                        <p
-                          key={sub.label}
-                          onClick={() => {
-                            navigate(sub.path);
-                            if (isMobile) onToggleCollapse();
-                          }}
-                          className={`cursor-pointer py-2 px-3 hover:bg-blue-50 rounded-lg text-sm ${
-                            location.pathname === sub.path ? 'bg-blue-50 text-blue-600 font-medium' : ''
-                          }`}
-                        >
-                          {sub.label}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

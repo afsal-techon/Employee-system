@@ -169,18 +169,23 @@ const BranchPage = () => {
 
 
 
-  return (
-    <div className='p-8 '>
-        <div className='flex justify-between'>
-          <h2 className='text-3xl font-semibold'>Branch</h2>
-        <AddButton btnHeading={'Add Branch'} logo={<FaBuilding size={28}/>}/> 
-        </div> 
+ return (
+    <div className="p-1 md:p-6 lg:p-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <h2 className="text-2xl md:text-3xl font-semibold text-gray-800">Branch Management</h2>
+        <AddButton 
+          btnHeading="Add Branch" 
+          logo={<FaBuilding size={20} className="md:size-6"/>}
+        /> 
+      </div> 
 
-            <Table title={'Branch'} columns= {columns} data = {data} />
-    
-       
+      <Table 
+        title="Branch List" 
+        columns={columns} 
+        data={data} 
+      />
     </div>
-  )
+  );
 }
 
 export default BranchPage

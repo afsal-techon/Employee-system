@@ -73,7 +73,7 @@ const Login = () => {
             <input
               {...register("email")}
               placeholder="Enter the Email"
-              className="p-3 bg-gray-200 rounded-md w-full focus:outline-none"
+              className={`p-3 bg-gray-200 rounded-md w-full focus:outline-none border ${errors.email ? 'border-red-500' : 'border-gray-300' }`}
               type="email"
             />
             {errors.email && (
@@ -88,8 +88,9 @@ const Login = () => {
             <input
               {...register("password")}
               placeholder="Enter the password"
-              className="p-3 bg-gray-200 rounded-md w-full focus:outline-none"
+              className={`p-3 bg-gray-200 rounded-md w-full focus:outline-none border ${errors.password ? 'border-red-500' : 'border-gray-300' }`}
               type="password"
+             
             />
             {errors.password && (
               <span className="text-sm text-red-600">

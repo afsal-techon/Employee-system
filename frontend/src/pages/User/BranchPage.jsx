@@ -195,7 +195,7 @@ const BranchPage = () => {
 
   return (
     <div className="p-1 md:p-2 lg:p-2">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
         <h2 className="text-2xl md:text-3xl font-semibold text-gray-800">
           Branch Management
         </h2>

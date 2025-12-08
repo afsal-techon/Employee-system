@@ -11,7 +11,7 @@ export const branchApi = {
         }
     },
 
-        getAllBranches: async (page,limit,search)=>{
+        getAllBranches: async ({page,limit,search})=>{
         try {
             const { data } = await axios.get('/branch',{
                 params:{ page, limit, search}

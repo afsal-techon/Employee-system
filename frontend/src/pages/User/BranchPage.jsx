@@ -36,7 +36,6 @@ const BranchPage = () => {
         limit,
         search,
       });
-      console.log(response, "response getting");
       setBranches(response.data);
       setTotalPages(response.totalPages);
     } catch (error) {
@@ -48,6 +47,7 @@ const BranchPage = () => {
   };
 
   useEffect(() => {
+     console.log("API HIT WITH:", { page, limit, search });
     fetchBranches();
   }, [page, limit, search]);
 
@@ -76,7 +76,7 @@ const BranchPage = () => {
     no: (page - 1) * limit + index + 1,
     logo: (
       <img
-        src={branch.logo || Logo}
+        src={branch.logo}
         className="w-10 h-10 rounded-full"
         alt="logo"
       />

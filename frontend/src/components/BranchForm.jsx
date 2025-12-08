@@ -207,7 +207,6 @@ const BranchForm = ({ onSubmit, onCancel, initialData = {}, isSubmitting = false
       </div>
 
       {/* Address Information */}
-      <div className="grid grid-cols-1 gap-4">
         <Input
           label="Address"
           {...register("address")}
@@ -215,7 +214,6 @@ const BranchForm = ({ onSubmit, onCancel, initialData = {}, isSubmitting = false
           placeholder="Enter full address"
           required
         />
-      </div>
 
       <FormButtons
         isSubmitting={isSubmitting}

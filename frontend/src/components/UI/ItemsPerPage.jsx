@@ -1,5 +1,6 @@
 
 const ItemsPerPage = ({ value, onChange }) => {
+  console.log(value,'value')
   return (
     <select
       value={value}

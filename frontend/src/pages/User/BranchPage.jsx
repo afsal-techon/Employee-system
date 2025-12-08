@@ -13,7 +13,7 @@ const BranchPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [branches, setBranches] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);

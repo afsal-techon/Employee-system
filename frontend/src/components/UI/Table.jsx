@@ -1,4 +1,3 @@
-
 import SearchBar from "./SearchBar";
 import Pagination from "./Pagination";
 import ItemsPerPage from "./ItemsPerPage";
@@ -16,9 +15,6 @@ const Table = ({
   search,
   onSearchChange,
 }) => {
-
-
-
   return (
     <div className="w-full bg-white rounded-xl p-4 md:p-6 mt-4 lg:mt-8 shadow-sm border border-gray-200">
       {/* Header */}
@@ -50,17 +46,22 @@ const Table = ({
               </tr>
             </thead>
 
-                <tbody>
+            <tbody>
               {/* LOADER INSIDE TABLE */}
               {isLoading ? (
                 <tr>
-                  <td colSpan={columns.length} className="p-8 text-center">
-                    <span className="loader" />
+                  <td colSpan={columns.length} className="p-0">
+                    <div className="flex items-center justify-center h-[200px] w-full">
+                      <div className="loader-table" />
+                    </div>
                   </td>
                 </tr>
               ) : data.length > 0 ? (
                 data.map((row, index) => (
-                  <tr key={index} className="hover:bg-gray-50 border-b border-gray-200">
+                  <tr
+                    key={index}
+                    className="hover:bg-gray-50 border-b border-gray-200"
+                  >
                     {columns.map((col) => (
                       <td key={col.key} className="p-3 text-sm">
                         {row[col.key]}
@@ -70,7 +71,10 @@ const Table = ({
                 ))
               ) : (
                 <tr>
-                  <td colSpan={columns.length} className="p-8 text-center text-gray-500">
+                  <td
+                    colSpan={columns.length}
+                    className="p-8 text-center text-gray-500"
+                  >
                     No data found
                   </td>
                 </tr>
@@ -81,7 +85,7 @@ const Table = ({
       </div>
 
       {/* Pagination Footer - Only show if there's data */}
-        {!isLoading && data.length > 0 && (
+      {!isLoading && data.length > 0 && (
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 px-2 mt-4">
           <ItemsPerPage
             value={itemsPerPage}
@@ -90,7 +94,11 @@ const Table = ({
               onPageChange(1);
             }}
           />
-          <Pagination page={page} totalPages={totalPages} onPageChange={onPageChange} />
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPageChange={onPageChange}
+          />
         </div>
       )}
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddButton from "../../components/UI/AddButton";
 import { FaBuilding } from "react-icons/fa";
 import Table from "../../components/UI/Table";
@@ -12,164 +12,44 @@ const BranchPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [branches, setBranches] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [search, setSearch] = useState("");
+  const [totalPages, setTotalPages] = useState(1);
 
   const columns = [
     { key: "no", label: "No." },
     { key: "logo", label: "Logo" },
     { key: "name", label: "Branch Name" },
-    { key: "trn", label: "TRN" },
-    { key: "address", label: "Address" },
+    { key: "email", label: "Email" },
     { key: "phone", label: "Phone" },
-    { key: "landline", label: "Landline" },
-    { key: "currency", label: "Currency" },
-    { key: "symbol", label: "Currency Symbol" },
   ];
 
-  const data = [
-    {
-      no: 1,
-      logo: <img src={Logo} className="w-10 h-10 rounded-full" />,
-      name: "Techon",
-      trn: "3483383723",
-      address: "Ponand",
-      phone: "54534545665",
-      landline: "N/A",
-      currency: "AED",
-      symbol: "AED",
-    },
-    {
-      no: 1,
-      logo: <img src={Logo} className="w-10 h-10 rounded-full" />,
-      name: "Techon",
-      trn: "3483383723",
-      address: "Ponand",
-      phone: "54534545665",
-      landline: "N/A",
-      currency: "AED",
-      symbol: "AED",
-    },
-    {
-      no: 1,
-      logo: <img src={Logo} className="w-10 h-10 rounded-full" />,
-      name: "Techon",
-      trn: "3483383723",
-      address: "Ponand",
-      phone: "54534545665",
-      landline: "N/A",
-      currency: "AED",
-      symbol: "AED",
-    },
-    {
-      no: 1,
-      logo: <img src={Logo} className="w-10 h-10 rounded-full" />,
-      name: "Techon",
-      trn: "3483383723",
-      address: "Ponand",
-      phone: "54534545665",
-      landline: "N/A",
-      currency: "AED",
-      symbol: "AED",
-    },
-    {
-      no: 1,
-      logo: <img src={Logo} className="w-10 h-10 rounded-full" />,
-      name: "Techon",
-      trn: "3483383723",
-      address: "Ponand",
-      phone: "54534545665",
-      landline: "N/A",
-      currency: "AED",
-      symbol: "AED",
-    },
-    {
-      no: 1,
-      logo: <img src={Logo} className="w-10 h-10 rounded-full" />,
-      name: "Techon",
-      trn: "3483383723",
-      address: "Ponand",
-      phone: "54534545665",
-      landline: "N/A",
-      currency: "AED",
-      symbol: "AED",
-    },
-    {
-      no: 1,
-      logo: <img src={Logo} className="w-10 h-10 rounded-full" />,
-      name: "Techon",
-      trn: "3483383723",
-      address: "Ponand",
-      phone: "54534545665",
-      landline: "N/A",
-      currency: "AED",
-      symbol: "AED",
-    },
-    {
-      no: 1,
-      logo: <img src={Logo} className="w-10 h-10 rounded-full" />,
-      name: "Techon",
-      trn: "3483383723",
-      address: "Ponand",
-      phone: "54534545665",
-      landline: "N/A",
-      currency: "AED",
-      symbol: "AED",
-    },
-    {
-      no: 1,
-      logo: <img src={Logo} className="w-10 h-10 rounded-full" />,
-      name: "Techon",
-      trn: "3483383723",
-      address: "Ponand",
-      phone: "54534545665",
-      landline: "N/A",
-      currency: "AED",
-      symbol: "AED",
-    },
-    {
-      no: 1,
-      logo: <img src={Logo} className="w-10 h-10 rounded-full" />,
-      name: "Techon",
-      trn: "3483383723",
-      address: "Ponand",
-      phone: "54534545665",
-      landline: "N/A",
-      currency: "AED",
-      symbol: "AED",
-    },
-    {
-      no: 1,
-      logo: <img src={Logo} className="w-10 h-10 rounded-full" />,
-      name: "Techon",
-      trn: "3483383723",
-      address: "Ponand",
-      phone: "54534545665",
-      landline: "N/A",
-      currency: "AED",
-      symbol: "AED",
-    },
-    {
-      no: 1,
-      logo: <img src={Logo} className="w-10 h-10 rounded-full" />,
-      name: "Techon",
-      trn: "3483383723",
-      address: "Ponand",
-      phone: "54534545665",
-      landline: "N/A",
-      currency: "AED",
-      symbol: "AED",
-    },
-    {
-      no: 1,
-      logo: <img src={Logo} className="w-10 h-10 rounded-full" />,
-      name: "Techon",
-      trn: "3483383723",
-      address: "Ponand",
-      phone: "54534545665",
-      landline: "N/A",
-      currency: "AED",
-      symbol: "AED",
-    },
-  ];
+  const fetchBranches = async () => {
+    try {
+      setIsLoading(true);
+      const response = await branchApi.getAllBranches({
+        page,
+        limit,
+        search,
+      });
+      console.log(response,'response getting')
+      setBranches(response.data);
+      setTotalPages(response.totalPages);
+    } catch (error) {
+      console.log(error,'erorr')
+      toast.error(error?.response?.data?.message || "Internal Server Error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBranches();
+  }, [page, limit, search]);
 
   const handleCancel = () => {
     if (!isSubmitting) {
@@ -180,18 +60,30 @@ const BranchPage = () => {
   const handleAddBranch = async (formData) => {
     setIsSubmitting(true);
     try {
-
-      const newBranch = await branchApi.createBranch(formData);
-      console.log(newBranch,'new data branch')
-      toast.success('Branch added successfully');
+      await branchApi.createBranch(formData);
+      toast.success("Branch added successfully");
       setIsModalOpen(false);
-
+      fetchBranches();
     } catch (error) {
-      toast.error(error)
-    } finally{
+      toast.error(error);
+    } finally {
       setIsSubmitting(false);
     }
   };
+
+  const tableData = branches.map((branch, index) => ({
+    no: (page - 1) * limit + index + 1,
+    logo: (
+      <img
+        src={branch.logo || Logo}
+        className="w-10 h-10 rounded-full"
+        alt="logo"
+      />
+    ),
+    name: branch.name,
+    email: branch.email,
+    phone: branch.phone,
+  }));
 
   return (
     <div className="p-1 md:p-2 lg:p-2">
@@ -206,7 +98,19 @@ const BranchPage = () => {
         />
       </div>
 
-      <Table title="Branch List" columns={columns} data={data} />
+      <Table
+        title="Branch List"
+        columns={columns}
+        data={tableData}
+        isLoading={isLoading}
+        page={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+        itemsPerPage={limit}
+        onItemsPerPageChange={setLimit}
+        search={search}
+        onSearchChange={setSearch}
+      />
 
       <Modal
         isOpen={isModalOpen}

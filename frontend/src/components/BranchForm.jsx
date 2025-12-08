@@ -92,6 +92,7 @@ const BranchForm = ({ onSubmit, onCancel, initialData = {}, isSubmitting = false
     // Create FormData to handle file upload
     const formData = new FormData();
     
+    
     // Append all form fields
     Object.keys(data).forEach(key => {
       if (key === 'logo' && logo) {
@@ -182,12 +183,12 @@ const BranchForm = ({ onSubmit, onCancel, initialData = {}, isSubmitting = false
           </p>
         </div>
 
-        <Input
+        {/* <Input
           label="City"
           {...register("city")}
           error={errors.city?.message}
           placeholder="Enter the city"
-        />
+        /> */}
 
         <Input
           label="Email"

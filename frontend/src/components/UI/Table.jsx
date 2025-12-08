@@ -3,27 +3,21 @@ import SearchBar from "./SearchBar";
 import Pagination from "./Pagination";
 import ItemsPerPage from "./ItemsPerPage";
 
-const Table = ({ title, columns = [], data = [] }) => {
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+const Table = ({
+  title,
+  columns = [],
+  data = [],
+  isLoading,
+  page,
+  totalPages,
+  onPageChange,
+  itemsPerPage,
+  onItemsPerPageChange,
+  search,
+  onSearchChange,
+}) => {
 
-  const filteredData = data.filter((row) =>
-    Object.values(row).some((val) =>
-      String(val).toLowerCase().includes(search.toLowerCase())
-    )
-  );
 
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  const paginatedData = filteredData.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage
-  );
-
-  // Reset to page 1 when search changes
-  useEffect(() => {
-    setPage(1);
-  }, [search]);
 
   return (
     <div className="w-full bg-white rounded-xl p-4 md:p-6 mt-4 lg:mt-8 shadow-sm border border-gray-200">
@@ -33,7 +27,7 @@ const Table = ({ title, columns = [], data = [] }) => {
         <div className="w-full lg:w-auto">
           <SearchBar
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => onSearchChange(e.target.value)}
           />
         </div>
       </div>
@@ -56,21 +50,19 @@ const Table = ({ title, columns = [], data = [] }) => {
               </tr>
             </thead>
 
-            <tbody>
-              {paginatedData.length > 0 ? (
-                paginatedData.map((row, index) => (
-                  <tr
-                    key={index}
-                    className="hover:bg-gray-50 border-b border-gray-200 last:border-b-0"
-                  >
+                <tbody>
+              {/* LOADER INSIDE TABLE */}
+              {isLoading ? (
+                <tr>
+                  <td colSpan={columns.length} className="p-8 text-center">
+                    <span className="loader" />
+                  </td>
+                </tr>
+              ) : data.length > 0 ? (
+                data.map((row, index) => (
+                  <tr key={index} className="hover:bg-gray-50 border-b border-gray-200">
                     {columns.map((col) => (
-                      <td
-                        key={col.key}
-                        className="p-3 text-sm whitespace-nowrap text-left"
-                        title={
-                          typeof row[col.key] === "string" ? row[col.key] : ""
-                        }
-                      >
+                      <td key={col.key} className="p-3 text-sm">
                         {row[col.key]}
                       </td>
                     ))}
@@ -78,10 +70,7 @@ const Table = ({ title, columns = [], data = [] }) => {
                 ))
               ) : (
                 <tr>
-                  <td
-                    colSpan={columns.length}
-                    className="p-8 text-center text-gray-500 text-sm"
-                  >
+                  <td colSpan={columns.length} className="p-8 text-center text-gray-500">
                     No data found
                   </td>
                 </tr>
@@ -92,20 +81,16 @@ const Table = ({ title, columns = [], data = [] }) => {
       </div>
 
       {/* Pagination Footer - Only show if there's data */}
-      {paginatedData.length > 0 && (
+        {!isLoading && data.length > 0 && (
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 px-2 mt-4">
           <ItemsPerPage
             value={itemsPerPage}
             onChange={(value) => {
-              setItemsPerPage(value);
-              setPage(1);
+              onItemsPerPageChange(value);
+              onPageChange(1);
             }}
           />
-          <Pagination
-            page={page}
-            totalPages={totalPages}
-            onPageChange={setPage}
-          />
+          <Pagination page={page} totalPages={totalPages} onPageChange={onPageChange} />
         </div>
       )}
     </div>

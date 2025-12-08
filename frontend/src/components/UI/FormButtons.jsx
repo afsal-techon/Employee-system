@@ -13,7 +13,7 @@ const FormButtons = ({
         type="button"
         onClick={onCancel}
          disabled={isSubmitting}
-        className="px-6 py-2 bg-[#ff5656] text-white cursor-pointer text-gray-700 border border-gray-300 rounded-lg hover:bg-[#ff3d3d] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="px-6 py-2 bg-[#ff5656] cursor-pointer text-gray-700 border border-gray-300 rounded-lg hover:bg-[#ff3d3d] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {cancelText}
       </button>

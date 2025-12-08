@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MdClose } from 'react-icons/md';
+import AOS from "aos";
 
 const Modal = ({ 
   isOpen, 
@@ -24,18 +25,21 @@ const Modal = ({
     }
   };
 
+  // Re-run AOS when modal appears
+  useEffect(() => {
+    AOS.refresh();
+  }, []);
+
   return (
-    <div
-      className="fixed inset-0 flex items-center justify-center p-4 z-50
-                 bg-black/40 animate-overlay-fade"
+    <div 
+      className="fixed inset-0 bg-black/40 flex items-center backdrop-blur-xs justify-center p-4 z-50"
       onClick={handleOverlayClick}
     >
       <div
-        className={
-          `bg-white rounded-xl shadow-lg w-full ${sizeClasses[size]}
-           max-h-[80vh] flex flex-col
-           animate-modal-soft`
-        }
+        data-aos="fade-down"
+        data-aos-duration="400"
+        data-aos-easing="ease-out"
+        className={`bg-white rounded-xl shadow-lg w-full ${sizeClasses[size]} transition-all`}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
@@ -49,7 +53,7 @@ const Modal = ({
         </div>
 
         {/* Body */}
-        <div className="p-6 overflow-y-auto">
+        <div className="p-6 max-h-[70vh] overflow-y-auto">
           {children}
         </div>
       </div>

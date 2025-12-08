@@ -36,11 +36,11 @@ const BranchPage = () => {
         limit,
         search,
       });
-      console.log(response,'response getting')
+      console.log(response, "response getting");
       setBranches(response.data);
       setTotalPages(response.totalPages);
     } catch (error) {
-      console.log(error,'erorr')
+      console.log(error);
       toast.error(error?.response?.data?.message || "Internal Server Error");
     } finally {
       setIsLoading(false);
@@ -50,6 +50,7 @@ const BranchPage = () => {
   useEffect(() => {
     fetchBranches();
   }, [page, limit, search]);
+
 
   const handleCancel = () => {
     if (!isSubmitting) {

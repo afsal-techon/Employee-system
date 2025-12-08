@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+
 import SearchBar from "./SearchBar";
 import Pagination from "./Pagination";
 import ItemsPerPage from "./ItemsPerPage";

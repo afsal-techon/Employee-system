@@ -26,7 +26,6 @@ const BranchForm = ({ onSubmit, onCancel, initialData = {}, isSubmitting = false
     register,
     handleSubmit,
     formState: { errors, isValid },
-    watch,
     setValue,
   } = useForm({
     resolver: yupResolver(branchSchema),
@@ -40,7 +39,6 @@ const BranchForm = ({ onSubmit, onCancel, initialData = {}, isSubmitting = false
     mode: "onChange",
   });
 
-  const formValues = watch();
 
   // Handle logo file selection
   const handleLogoChange = (event) => {

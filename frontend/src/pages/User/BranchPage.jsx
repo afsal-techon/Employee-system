@@ -7,6 +7,7 @@ import Modal from "../../components/UI/Modal";
 import BranchForm from "../../components/BranchForm";
 import { branchApi } from "../../services/API";
 import { toast } from "react-toastify";
+import EditDeleteIcon from "../../components/UI/EditDeleteIcon";
 
 const BranchPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,6 +27,7 @@ const BranchPage = () => {
     { key: "name", label: "Branch Name" },
     { key: "email", label: "Email" },
     { key: "phone", label: "Phone" },
+    { key: "actions", label: "Actions" },
   ];
 
   const fetchBranches = async () => {
@@ -84,6 +86,9 @@ const BranchPage = () => {
     name: branch.name,
     email: branch.email,
     phone: branch.phone,
+    actions:(
+      <EditDeleteIcon  onEdit={()=> console.log('edit')} onDelete={()=>console.log('delete')} />
+    )
   }));
 
   return (

@@ -1,5 +1,5 @@
 import { Popover, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { RiAccountCircleFill } from "react-icons/ri";
 import { FiLogOut } from "react-icons/fi";
 import { CgProfile } from "react-icons/cg";

@@ -1,14 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import ProtectRouter from "./ProtectRouter";
 import App from "../App";
-import AdminLayout from "../components/layout/AdminLayout";
-import Login from "../pages/User/Login";
-import Profile from "../pages/User/Profile";
-import Register from "../pages/User/Register";
-import Dashboard from "../pages/User/Dashboard";
-import BranchPage from "../pages/User/BranchPage";
 
-
+// Lazy pages
+const AdminLayout = lazy(() => import("../components/layout/AdminLayout"));
+const Dashboard = lazy(() => import("../pages/User/Dashboard"));
+const BranchPage = lazy(() => import("../pages/User/BranchPage"));
+const Login = lazy(() => import("../pages/User/Login"));
+const Register = lazy(() => import("../pages/User/Register"));
 
 const router = createBrowserRouter([
   {
@@ -16,40 +16,40 @@ const router = createBrowserRouter([
     element: <ProtectRouter />,
     children: [
       {
-        path: "/",
         element: <App />,
         children: [
           {
-            path: "/",
-            element: <AdminLayout />,
+            element: <AdminLayout />,   // ❌ no Suspense here
             children: [
-              {
-                path: "/",
-                element:<Dashboard/>
-              },
-              {
-                path:'/branch',
-                element:<BranchPage/>
-              }
+              { index: true, element: <Dashboard /> },
+              { path: "branch", element: <BranchPage /> },
             ],
           },
           {
-            path:'/about',
-            element: <h1>About</h1>
-          }
+            path: "about",
+            element: <h1>About</h1>,
+          },
         ],
       },
     ],
   },
 
-   {
+  {
     path: "/register",
-    element: <Register />,
+    element: (
+      <Suspense fallback={<div className="loader"></div>}>
+        <Register />
+      </Suspense>
+    ),
   },
 
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <Suspense fallback={<div className="loader"></div>}>
+        <Login />
+      </Suspense>
+    ),
   },
 ]);
 

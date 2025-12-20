@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../Sidebar";
 import Navbar from "../Navbar";
+import { Suspense } from "react";
 
 const AdminLayout = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -45,7 +46,9 @@ const AdminLayout = () => {
           isMobile={isMobile}
         />
         <main className="flex-1 bg-gray-200 overflow-auto p-4">
-          <Outlet />
+             <Suspense fallback={<div className="loader"></div>}>
+            <Outlet />
+          </Suspense>
         </main>
       </div>
     </div>

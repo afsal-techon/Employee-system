@@ -10,6 +10,9 @@ const Modal = ({
   size = "md",
   closeOnOverlayClick = true
 }) => {
+    useEffect(() => {
+    AOS.refresh();
+  }, []);
   if (!isOpen) return null;
 
   const sizeClasses = {
@@ -26,9 +29,7 @@ const Modal = ({
   };
 
   // Re-run AOS when modal appears
-  useEffect(() => {
-    AOS.refresh();
-  }, []);
+
 
   return (
     <div 
